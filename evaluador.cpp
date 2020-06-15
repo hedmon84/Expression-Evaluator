@@ -1,29 +1,54 @@
 #include "evaluador.hpp"
 
 int sizes;
-stack<string> s;   // stack2
-vector<string> g1; //posfix
+stack<string> s;          // stack2
+vector<string> g1;        //posfix
+vector<double> numscheck; //numscheck
 int precedence1 = 0;
+int counter = 0;
 int precedence2;
 string inf;
 string c_operator;
-// (6+2)*3/2^2-4
 
+// (66+222)*3333/22222^222222-444444
+
+// evaluador machine
 void evaluador(string infix)
 {
     inf = infix;
-    string c[100];
+    // string c[100];
+    string numbers;
+    // num size count
 
     sizes = infix.size();
 
-    for (int i = 0; i < infix.size(); i++)
-    {
-        c[i] = infix[i];
-    }
+    // for (int i = 0; i < infix.size() + 1; i++)
+    // {
+
+    //     c[i] = infix[i];
+    //     if (is_number(c[i]))
+    //     {
+    //         numbers += c[i];
+    //     }
+
+    //     // if (is_operator(c[i]) || i >= sizes)
+    //     // {
+
+    //     //     if (c[i] == "(")
+    //     //     {
+    //     //     }
+    //     //     if (counter >= 1)
+    //     //     {
+    //     //         numscheck.push_back(counter);
+    //     //         counter = 0;
+    //     //     }
+    //     // }
+    // }
 
     for (int i = 0; i < sizes; i++)
     {
-        string exp = c[i];
+        //gets every character of the string
+        string exp = infix.substr(i, 1);
 
         //operator evaluation
         if (1 == is_operator(exp))
@@ -38,7 +63,7 @@ void evaluador(string infix)
 
                     while (!s.empty())
                     {
-                        if (s.top() == "+")
+                        if (s.top() == "^" || s.top() == "*" || s.top() == "/" || s.top() == "%" || s.top() == "+" || s.top() == "-" || s.top() == "pi" || s.top() == "e")
                         {
                             g1.push_back(s.top());
                         }
@@ -66,8 +91,17 @@ void evaluador(string infix)
         //number evaluation
         else if (is_number(exp))
         {
+
+            numbers += exp;
+            //numbers += infix.substr(i + 1, 1);
+
             cout << "is number" << endl;
-            g1.push_back(exp);
+            //infix.substr(i + 1, 1)) if the next is "" or a operator
+            if (is_operator(infix.substr(i + 1, 1)) || infix.substr(i + 1, 1) == "")
+            {
+                g1.push_back(numbers);
+                numbers.clear();
+            }
         }
         else
         {
@@ -85,6 +119,7 @@ void evaluador(string infix)
     }
 }
 
+//stack machine
 void stack2(string operators)
 {
     //precedence check
@@ -134,9 +169,11 @@ void stack2(string operators)
         precedence1 = precedence(operators);
     }
 }
+
+// if is operator
 int is_operator(string symbol)
 {
-    if (symbol == "(" || symbol == ")" || symbol == "^" || symbol == "*" || symbol == "/" || symbol == "%" || symbol == "+" || symbol == "-" || symbol == "p" || symbol == "i" || symbol == "e")
+    if (symbol == "(" || symbol == ")" || symbol == "^" || symbol == "*" || symbol == "/" || symbol == "%" || symbol == "+" || symbol == "-" || symbol == "pi" || symbol == "e")
     {
         return 1;
     }
@@ -144,6 +181,7 @@ int is_operator(string symbol)
         return 0;
 }
 
+// is digit
 bool is_number(string n)
 {
     char *c = const_cast<char *>(n.c_str());
@@ -159,6 +197,8 @@ bool is_number(string n)
     else
         return false;
 }
+
+//calculate precedence
 int precedence(string symbol)
 {
 
@@ -205,6 +245,35 @@ void stackchecker()
     cout << '\n';
 }
 
+void evaluate_expressions()
+{
+    //*i is has the result
+    for (auto i = g1.begin(); i != g1.end(); ++i)
+    {
+        if (is_operator(*i))
+        {
+            cout << "operator found" << *i << endl;
+        }
+    }
+}
+
+int operation(int a, int b, char opr)
+{
+    switch (opr)
+    {
+    case '+':
+        return a + b;
+    case '-':
+        return a - b;
+    case '*':
+        return a * b;
+    case '/':
+        return a / b;
+    default:
+        return 0;
+    }
+}
+
 double answer()
 {
     return 1;
@@ -215,8 +284,6 @@ void print_posfix()
     cout << endl
          << endl;
     cout << "infix form: " << inf << endl
-         << endl;
-    cout << endl
          << endl;
     cout << "posfix form: ";
     for (auto i = g1.begin(); i != g1.end(); ++i)

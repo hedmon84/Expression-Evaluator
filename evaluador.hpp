@@ -13,12 +13,14 @@ using namespace std;
 void evaluador(string);
 void stack1(string digits);
 void stack2(string operators);
-void evaluate_expressions(string expression);
+void evaluate_expressions();
+void stackchecker();
+void print_posfix();
+int operation(int a, int b, char opr);
+int num_size(string number);
 int is_operator(string symbol);
 bool is_number(string number);
 int precedence(string symbol);
-void stackchecker();
-void print_posfix();
 double answer();
 
 #endif /*EVALUADOR_HPP*/

@@ -15,5 +15,7 @@ int main()
     evaluador(name);
     // stackchecker();
     print_posfix();
+    cout << "---------" << endl;
+    evaluate_expressions();
     return 0;
 }
