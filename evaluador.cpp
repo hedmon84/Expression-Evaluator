@@ -6,6 +6,7 @@ vector<string> g1; //posfix
 int precedence1 = 0;
 int precedence2;
 string inf;
+string c_operator;
 // (6+2)*3/2^2-4
 
 void evaluador(string infix)
@@ -24,10 +25,12 @@ void evaluador(string infix)
     {
         string exp = c[i];
 
+        //operator evaluation
         if (1 == is_operator(exp))
         {
             cout << "is operator" << endl;
 
+            //validations
             if (exp == ")" || exp == "(")
             {
                 if (exp == ")")
@@ -49,12 +52,18 @@ void evaluador(string infix)
                 else
                     s.push(exp);
             }
+
+            else if (exp == c_operator)
+            {
+                s.push(exp);
+            }
             else
             {
                 stack2(exp);
             }
         }
 
+        //number evaluation
         else if (is_number(exp))
         {
             cout << "is number" << endl;
@@ -79,6 +88,7 @@ void evaluador(string infix)
 void stack2(string operators)
 {
     //precedence check
+    c_operator = operators;
 
     if (precedence(operators) == precedence1)
     {
