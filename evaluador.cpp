@@ -2,6 +2,7 @@
 
 int sizes;
 stack<string> s;          // stack2
+stack<double> s2;         // numbers stacl
 vector<string> g1;        //posfix
 vector<double> numscheck; //numscheck
 int precedence1 = 0;
@@ -10,7 +11,7 @@ int precedence2;
 string inf;
 string c_operator;
 
-// (66+222)*3333/22222^222222-444444
+// (6+2)*3/2^2-4
 
 // evaluador machine
 void evaluador(string infix)
@@ -248,18 +249,53 @@ void stackchecker()
 void evaluate_expressions()
 {
     //*i is has the result
+    double x = 0;
+    double y = 0;
+    double digits = 0;
+    double result = 0;
+    string op;
+    string::size_type sz;
+
     for (auto i = g1.begin(); i != g1.end(); ++i)
     {
-        if (is_operator(*i))
+        if (1 == is_number(*i))
         {
-            cout << "operator found" << *i << endl;
+            cout << "is number" << endl;
+            digits = stod(*i, &sz);
+            s2.push(digits);
+        }
+        else if (is_operator(*i))
+        {
+
+            op = *i;
+            cout << '\n';
+            cout << "operator: " << op << endl;
+            // cout << '\t' << s.top();
+            x = s2.top();
+            // x = stod(s.top().substr(sz));
+            s2.pop();
+            y = s2.top();
+            s2.pop();
+            cout << '\n';
+            cout << "variable in x : " << x << endl;
+            // y = stod(s.top().substr(sz));
+            cout << "variable in y : " << y << endl;
+            cout << '\n';
+
+            result = operation(y, x, op);
+            s2.push(result);
+            cout << "result :" << result << endl;
         }
     }
 }
 
-int operation(int a, int b, char opr)
+double operation(double a, double b, string opr)
 {
-    switch (opr)
+
+    char cstr[opr.size() - 1];
+    strcpy(cstr, opr.c_str());
+
+    switch (*cstr)
     {
     case '+':
         return a + b;
@@ -269,6 +305,14 @@ int operation(int a, int b, char opr)
         return a * b;
     case '/':
         return a / b;
+    case '%':
+        return fmod(a, b);
+    case '^':
+        return pow(a, b);
+    case 'p':
+        return fmod(a, b);
+    case 'e':
+        return fmod(a, b);
     default:
         return 0;
     }
