@@ -11,14 +11,14 @@ int count_parentesis = 0;
 int precedence2;
 string inf;
 string c_operator;
-
+//infix.substr(i + 1, 1) == "^" || infix.substr(i + 1, 1) == "/" || infix.substr(i + 1, 1) == "*" || infix.substr(i + 1, 1) == "-" || s.top() == "%" || s.top() == "+" || s.top() == "pi" || s.top() == "e"
 // revisar lo de los parentesis () presedencia maxima
 // (6+2)*3/2^2-4      pass
 // (6+10(10+1))*2     pass
 // 1^2/(5*3)+10       pass
-//((10+(6+2)*3)/((2^2)-4)) pass
-//8^2(5*(5*2)+(18/2)/1000 error
 // ((8+(1+2)/15)) res = 812+15/+  pass
+//((10+(6+2)*3)/((2^2)-4)) pass *error
+//8^2(5*(5*2)+(18/2))/1000 error
 
 // evaluador machine
 void evaluador(string infix)
@@ -40,39 +40,8 @@ void evaluador(string infix)
             cout << "is operator" << endl;
 
             //validations
-            if (exp == ")")
-            {
 
-                if (count_parentesis >= 2 && infix.substr(i + 1, 1) == "/" || infix.substr(i + 1, 1) == "*" || infix.substr(i + 1, 1) == "-")
-                {
-                    precedence1 = precedence(exp);
-                    cout << "entre" << endl;
-                }
-
-                else if (exp == ")")
-                {
-                    emptystack();
-                }
-            }
-
-            else if (exp == c_operator)
-            {
-                if (exp == "(")
-                {
-                    count_parentesis++;
-                    cout << count_parentesis << endl;
-                }
-                s.push(exp);
-            }
-            else
-            {
-                if (exp == "(")
-                {
-                    count_parentesis++;
-                    cout << count_parentesis << endl;
-                }
-                stack2(exp);
-            }
+            stack2(exp);
         }
 
         //number evaluation
@@ -98,6 +67,10 @@ void evaluador(string infix)
     }
     while (!s.empty())
     {
+        if (s.top() == "(" || s.top() == ")")
+        {
+            s.pop();
+        }
 
         g1.push_back(s.top());
 
@@ -106,41 +79,50 @@ void evaluador(string infix)
     }
 }
 
-void emptystack()
-{
-
-    while (!s.empty())
-    {
-        if (s.top() == "^" || s.top() == "*" || s.top() == "/" || s.top() == "%" || s.top() == "+" || s.top() == "-" || s.top() == "pi" || s.top() == "e")
-        {
-            g1.push_back(s.top());
-        }
-
-        precedence1 = 0;
-        cout << '\t' << s.top();
-        s.pop();
-    }
-
-    cout
-        << '\n'
-        << "empty stack";
-}
 //stack machine
 void stack2(string operators)
 {
     //precedence check
-    c_operator = operators;
 
-    if (precedence(operators) == precedence1)
+    if (operators == ")")
     {
-        while (!s.empty())
+
+        while (s.top() != "(")
         {
 
-            g1.push_back(s.top());
+            if (s.top() == "(" || s.top() == ")")
+            {
+                s.pop();
+            }
+            if (s.top() == "^" || s.top() == "*" || s.top() == "/" || s.top() == "%" || s.top() == "+" || s.top() == "-" || s.top() == "pi" || s.top() == "e")
+            {
+                g1.push_back(s.top());
+            }
 
             cout << '\t' << s.top();
             s.pop();
         }
+
+        cout
+            << '\n'
+            << "empty stack";
+        s.pop();
+    }
+
+    else if (operators == "(")
+    {
+        s.push(operators);
+        precedence1 = 0;
+    }
+
+    else if (precedence(operators) == precedence1)
+    {
+
+        g1.push_back(s.top());
+
+        cout << '\t' << s.top();
+        s.pop();
+
         cout << '\n'
              << "precedence update" << endl;
         s.push(operators);
@@ -155,56 +137,33 @@ void stack2(string operators)
     else if (precedence(operators) < precedence1)
     {
 
-        if (s.top() == "(")
-        {
-            s.pop();
+        // if (count_parentesis >= 2)
+        // {
 
-            cout << '\n'
-                 << "pop ( " << endl;
+        //     g1.push_back(s.top());
+        //     s.pop();
 
-            cout << '\n'
-                 << "( deleted and precedence update" << endl;
-            s.push(operators);
-            precedence1 = precedence(operators);
-        }
-        else if (count_parentesis >= 2)
+        //     cout << '\n'
+        //          << "pop ( " << endl;
+
+        //     cout << '\n'
+        //          << "( deleted and precedence update" << endl;
+        //     s.push(operators);
+        //     count_parentesis = 0;
+        //     precedence1 = precedence(operators);
+        // }
+        while (!s.empty())
         {
 
             g1.push_back(s.top());
+
+            cout << '\t' << s.top();
             s.pop();
-
-            cout << '\n'
-                 << "pop ( " << endl;
-
-            cout << '\n'
-                 << "( deleted and precedence update" << endl;
-            s.push(operators);
-            count_parentesis = 0;
-            precedence1 = precedence(operators);
         }
-        else
-        {
-            while (!s.empty())
-            {
 
-                g1.push_back(s.top());
-
-                cout << '\t' << s.top();
-                s.pop();
-            }
-
-            cout << '\n'
-                 << "precedence update" << endl;
-            s.push(operators);
-            precedence1 = precedence(operators);
-        }
-    }
-
-    else
-    {
+        cout << '\n'
+             << "precedence update" << endl;
         s.push(operators);
-        g1.push_back(s.top());
-        s.pop();
         precedence1 = precedence(operators);
     }
 }
@@ -241,12 +200,7 @@ bool is_number(string n)
 int precedence(string symbol)
 {
 
-    if (symbol == "(" || symbol == ")") /* exponent operator, highest precedence*/
-    {
-        return (5);
-    }
-
-    else if (symbol == "^") /* exponent operator, highest precedence*/
+    if (symbol == "^") /* exponent operator, highest precedence*/
     {
         return (4);
     }
