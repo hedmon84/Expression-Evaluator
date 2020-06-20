@@ -11,14 +11,13 @@ int count_parentesis = 0;
 int precedence2;
 string inf;
 string c_operator;
-//infix.substr(i + 1, 1) == "^" || infix.substr(i + 1, 1) == "/" || infix.substr(i + 1, 1) == "*" || infix.substr(i + 1, 1) == "-" || s.top() == "%" || s.top() == "+" || s.top() == "pi" || s.top() == "e"
 // revisar lo de los parentesis () presedencia maxima
-// (6+2)*3/2^2-4      pass
-// (6+10(10+1))*2     pass
-// 1^2/(5*3)+10       pass
-// ((8+(1+2)/15)) res = 812+15/+  pass
-//((10+(6+2)*3)/((2^2)-4)) pass *error
-//8^2(5*(5*2)+(18/2))/1000 error
+// (6+2)*3/2^2-4            pass
+// (6+10(10+1))*2           pass
+// 1^2/(5*3)+10             pass
+// ((8+(1+2)/15))           pass
+//8^2(5*(5*2)+(18/2))/1000  pass
+//(1+1.5)*(2+300)           pass
 
 // evaluador machine
 void evaluador(string infix)
@@ -152,8 +151,14 @@ void stack2(string operators)
         //     count_parentesis = 0;
         //     precedence1 = precedence(operators);
         // }
+
         while (!s.empty())
         {
+
+            if (s.top() == "(")
+            {
+                break;
+            }
 
             g1.push_back(s.top());
 
