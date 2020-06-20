@@ -16,6 +16,6 @@ int main()
     // stackchecker();
     print_posfix();
     cout << "---------" << endl;
-    //evaluate_expressions();
+    evaluate_expressions();
     return 0;
 }
