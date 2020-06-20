@@ -15,6 +15,7 @@ void evaluador(string);
 void stack1(string digits);
 void stack2(string operators);
 void evaluate_expressions();
+void emptystack();
 void stackchecker();
 void print_posfix();
 double operation(double y, double x, string opr);
