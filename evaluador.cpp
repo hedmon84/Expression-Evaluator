@@ -11,7 +11,13 @@ int precedence2;
 string inf;
 string c_operator;
 
-// (6+2)*3/2^2-4
+// revisar lo de los parentesis () presedencia maxima
+// (6+2)*3/2^2-4      pass
+// (6+10(10+1))*2     pass
+// 1^2/(5*3)+10       pass
+//((10+(6+2)*3)/((2^2)-4))
+//8^((5*((5*2)+(18/2)))/1000)
+// (8+(1+2)/15) res = 812+15/+
 
 // evaluador machine
 void evaluador(string infix)
@@ -57,7 +63,7 @@ void evaluador(string infix)
             cout << "is operator" << endl;
 
             //validations
-            if (exp == ")" || exp == "(")
+            if (exp == ")")
             {
                 if (exp == ")")
                 {
@@ -69,11 +75,16 @@ void evaluador(string infix)
                             g1.push_back(s.top());
                         }
 
+                        precedence1 = 0;
                         cout << '\t' << s.top();
                         s.pop();
                     }
                     cout << '\n'
                          << "empty stack";
+                }
+
+                else if (exp == "(")
+                {
                 }
                 else
                     s.push(exp);
@@ -143,23 +154,41 @@ void stack2(string operators)
     }
     else if (precedence(operators) > precedence1)
     {
+
         s.push(operators);
         precedence1 = precedence(operators);
     }
     else if (precedence(operators) < precedence1)
     {
-        while (!s.empty())
+
+        if (s.top() == "(")
         {
-
-            g1.push_back(s.top());
-
-            cout << '\t' << s.top();
             s.pop();
+
+            cout << '\n'
+                 << "pop ( " << endl;
+
+            cout << '\n'
+                 << "( deleted and precedence update" << endl;
+            s.push(operators);
+            precedence1 = precedence(operators);
         }
-        cout << '\n'
-             << "precedence update" << endl;
-        s.push(operators);
-        precedence1 = precedence(operators);
+        else
+        {
+            while (!s.empty())
+            {
+
+                g1.push_back(s.top());
+
+                cout << '\t' << s.top();
+                s.pop();
+            }
+
+            cout << '\n'
+                 << "precedence update" << endl;
+            s.push(operators);
+            precedence1 = precedence(operators);
+        }
     }
 
     else
@@ -203,7 +232,12 @@ bool is_number(string n)
 int precedence(string symbol)
 {
 
-    if (symbol == "^") /* exponent operator, highest precedence*/
+    if (symbol == "(") /* exponent operator, highest precedence*/
+    {
+        return (5);
+    }
+
+    else if (symbol == "^") /* exponent operator, highest precedence*/
     {
         return (4);
     }
