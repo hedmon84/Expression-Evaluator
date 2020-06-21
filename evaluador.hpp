@@ -9,6 +9,7 @@
 #include <fstream>
 #include <stdio.h>
 #include <ctype.h>
+#include <iomanip>
 using namespace std;
 
 void evaluador(string);
@@ -17,6 +18,7 @@ void stack2(string operators);
 void evaluate_expressions();
 void stackchecker();
 void print_posfix();
+void valid_expresion(string infix);
 double operation(double y, double x, string opr);
 int num_size(string number);
 int is_operator(string symbol);

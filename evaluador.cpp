@@ -27,6 +27,8 @@ void evaluador(string infix)
     // num size count
 
     sizes = infix.size();
+
+    valid_expresion(inf);
     for (int i = 0; i < sizes; i++)
     {
         //gets every character of the string
@@ -254,6 +256,7 @@ void stackchecker()
     cout << '\n';
 }
 
+//features c++ 14/17
 template <typename T>
 T pi = T(3.141592653589793238462643383);
 template <typename T>
@@ -261,7 +264,7 @@ T e = T(2.71828);
 
 void evaluate_expressions()
 {
-    //*i is has the result
+    //*i it has the result
     double x = 0;
     double y = 0;
     double digits = 0;
@@ -356,4 +359,30 @@ void print_posfix()
         cout << *i << " ";
 
     cout << endl;
+}
+
+//--------------------validate_expresion--------------------------//
+
+void valid_expresion(string infix)
+{
+    int c_parenthesis = 0;
+    for (int i = 0; i < sizes; i++)
+    {
+        string compare = infix.substr(i, 1);
+
+        if (compare == "(" || compare == ")")
+        {
+            c_parenthesis++;
+        }
+    }
+
+    if (c_parenthesis % 2 == 0)
+    {
+        cout << "pass" << endl;
+    }
+    else
+    {
+        cout << "\033[1;31m Error#101 (Parentheses Mismatched) \033[0m\n";
+        exit(3);
+    }
 }

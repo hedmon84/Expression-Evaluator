@@ -17,5 +17,5 @@ int main()
     print_posfix();
     cout << "---------" << endl;
     evaluate_expressions();
-    return 0;
+    return 3;
 }
