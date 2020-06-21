@@ -11,7 +11,7 @@ string inf;
 // (6+10(10+1))*2           pass
 // 1^2/(5*3)+10             pass
 // ((8+(1+2)/15))           pass
-//8^2(5*(5*2)+(18/2))/1000  pass
+//8^(5*(5*2)+(18/2))/1000  pass
 //(1+1.5)*(2+300)           pass
 //(pi+pi)*pi/pi^pi-pi       pass
 //(e+e)*e/e^e-e             pass
@@ -19,6 +19,11 @@ string inf;
 // 5*(6+2)-12/4             pass
 //---------------error Test-------------------------
 // 1+1//(1-1)1             pass
+// 11+11(1-1)1-            pass
+// (1+1/(1-1)1             pass
+// -11+11(1-1)1            pass
+// 11+11(1-1-)1            pass
+// 11+11(-1-1)1            pass
 // evaluador machine
 void evaluador(string infix)
 {
@@ -137,22 +142,6 @@ void stack2(string operators)
     }
     else if (precedence(operators) < precedence1)
     {
-
-        // if (count_parentesis >= 2)
-        // {
-
-        //     g1.push_back(s.top());
-        //     s.pop();
-
-        //     cout << '\n'
-        //          << "pop ( " << endl;
-
-        //     cout << '\n'
-        //          << "( deleted and precedence update" << endl;
-        //     s.push(operators);
-        //     count_parentesis = 0;
-        //     precedence1 = precedence(operators);
-        // }
 
         while (!s.empty())
         {
@@ -379,13 +368,25 @@ void valid_expresion(string infix)
     int c_parenthesis = 0;
     bool op = false;
     bool op2;
+    bool op3;
     for (int i = 0; i < sizes; i++)
     {
         string firstchar = infix.substr(i, 1);
         string nextchar = infix.substr(i + 1, 1);
 
+        if (1 == operators_check(firstchar) && i == 0)
+        {
+            op3 = true;
+            break;
+        }
+
         if (firstchar == "(" || firstchar == ")")
         {
+            if (firstchar == "(" && operators_check(nextchar))
+            {
+                op3 = true;
+                break;
+            }
             c_parenthesis++;
         }
 
@@ -404,6 +405,11 @@ void valid_expresion(string infix)
             op2 = true;
             break;
         }
+        if (1 == operators_check(firstchar) && nextchar == "" || 1 == operators_check(firstchar) && nextchar == ")")
+        {
+            op3 = true;
+            break;
+        }
     }
 
     if (op == true)
@@ -416,16 +422,6 @@ void valid_expresion(string infix)
         exit(3);
     }
 
-    if (c_parenthesis % 2 == 0)
-    {
-        cout << "pass" << endl;
-    }
-    else
-    {
-        cout << "\033[1;31m Error#101 (Parentheses Mismatched) \033[0m\n";
-        exit(3);
-    }
-
     if (op2 == true)
     {
         cout << "\033[1;31m Error#103 (Character not allowed) \033[0m\n";
@@ -434,5 +430,25 @@ void valid_expresion(string infix)
     else
     {
         cout << "pass" << endl;
+    }
+
+    if (op3 == true)
+    {
+        cout << "\033[1;31m Error#104 (Few Arguments) \033[0m\n";
+        exit(3);
+    }
+    else
+    {
+        cout << "pass" << endl;
+    }
+
+    if (c_parenthesis % 2 == 0)
+    {
+        cout << "pass" << endl;
+    }
+    else
+    {
+        cout << "\033[1;31m Error#101 (Parentheses Mismatched) \033[0m\n";
+        exit(3);
     }
 }
