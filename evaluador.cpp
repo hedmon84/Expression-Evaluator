@@ -5,9 +5,8 @@ stack<string> s;          // stack2
 stack<double> s2;         // numbers stacl
 vector<string> g1;        //posfix
 vector<double> numscheck; //numscheck
-int precedence1 = 0;
+int precedence1 = 0;      // precedence saver
 string inf;
-// revisar lo de los parentesis () presedencia maxima
 // (6+2)*3/2^2-4            pass
 // (6+10(10+1))*2           pass
 // 1^2/(5*3)+10             pass
@@ -16,8 +15,10 @@ string inf;
 //(1+1.5)*(2+300)           pass
 //(pi+pi)*pi/pi^pi-pi       pass
 //(e+e)*e/e^e-e             pass
-// (e+pi)*e/pi^2-4            pass
-
+// (e+pi)*e/pi^2-4          pass
+// 5*(6+2)-12/4             pass
+//---------------error Test-------------------------
+// 1+1//(1-1)1             pass
 // evaluador machine
 void evaluador(string infix)
 {
@@ -363,20 +364,32 @@ void print_posfix()
 
 //--------------------validate_expresion--------------------------//
 
+int operators_check(string symbol)
+{
+    if (symbol == "^" || symbol == "*" || symbol == "/" || symbol == "%" || symbol == "+" || symbol == "-")
+    {
+        return 1;
+    }
+    else
+        return 0;
+}
+
 void valid_expresion(string infix)
 {
     int c_parenthesis = 0;
     bool op = false;
+    bool op2;
     for (int i = 0; i < sizes; i++)
     {
-        string compare = infix.substr(i, 1);
+        string firstchar = infix.substr(i, 1);
+        string nextchar = infix.substr(i + 1, 1);
 
-        if (compare == "(" || compare == ")")
+        if (firstchar == "(" || firstchar == ")")
         {
             c_parenthesis++;
         }
 
-        if (is_number(compare) || 1 == is_operator(compare))
+        if (is_number(firstchar) || 1 == is_operator(firstchar))
         {
             op = true;
         }
@@ -385,6 +398,22 @@ void valid_expresion(string infix)
             op = false;
             break;
         }
+
+        if (1 == operators_check(firstchar) && 1 == operators_check(nextchar))
+        {
+            op2 = true;
+            break;
+        }
+    }
+
+    if (op == true)
+    {
+        cout << "pass" << endl;
+    }
+    else
+    {
+        cout << "\033[1;31m Error#102 (Character not allowed) \033[0m\n";
+        exit(3);
     }
 
     if (c_parenthesis % 2 == 0)
@@ -397,13 +426,13 @@ void valid_expresion(string infix)
         exit(3);
     }
 
-    if (op == true)
+    if (op2 == true)
     {
-        cout << "pass" << endl;
+        cout << "\033[1;31m Error#103 (Character not allowed) \033[0m\n";
+        exit(3);
     }
     else
     {
-        cout << "\033[1;31m Error#102 (Character not allowed) \033[0m\n";
-        exit(3);
+        cout << "pass" << endl;
     }
 }

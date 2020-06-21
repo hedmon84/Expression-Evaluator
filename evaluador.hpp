@@ -22,6 +22,7 @@ void valid_expresion(string infix);
 double operation(double y, double x, string opr);
 int num_size(string number);
 int is_operator(string symbol);
+int operators_check(string symbol);
 bool is_number(string number);
 int precedence(string symbol);
 double answer();
