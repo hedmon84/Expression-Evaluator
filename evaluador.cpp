@@ -366,6 +366,7 @@ void print_posfix()
 void valid_expresion(string infix)
 {
     int c_parenthesis = 0;
+    bool op = false;
     for (int i = 0; i < sizes; i++)
     {
         string compare = infix.substr(i, 1);
@@ -373,6 +374,16 @@ void valid_expresion(string infix)
         if (compare == "(" || compare == ")")
         {
             c_parenthesis++;
+        }
+
+        if (is_number(compare) || 1 == is_operator(compare))
+        {
+            op = true;
+        }
+        else
+        {
+            op = false;
+            break;
         }
     }
 
@@ -383,6 +394,16 @@ void valid_expresion(string infix)
     else
     {
         cout << "\033[1;31m Error#101 (Parentheses Mismatched) \033[0m\n";
+        exit(3);
+    }
+
+    if (op == true)
+    {
+        cout << "pass" << endl;
+    }
+    else
+    {
+        cout << "\033[1;31m Error#102 (Character not allowed) \033[0m\n";
         exit(3);
     }
 }
