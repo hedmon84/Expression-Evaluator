@@ -21,9 +21,11 @@ string inf;
 // 1+1//(1-1)1             pass
 // 11+11(1-1)1-            pass
 // (1+1/(1-1)1             pass
-// -11+11(1-1)1            pass
+// +11+11(1-1)1            pass
 // 11+11(1-1-)1            pass
 // 11+11(-1-1)1            pass
+// 11/11(1-1)1              pass
+// 11%0(1-1)1              pass
 // evaluador machine
 void evaluador(string infix)
 {
@@ -369,6 +371,7 @@ void valid_expresion(string infix)
     bool op = false;
     bool op2;
     bool op3;
+    bool isdenominatorz;
     for (int i = 0; i < sizes; i++)
     {
         string firstchar = infix.substr(i, 1);
@@ -410,6 +413,12 @@ void valid_expresion(string infix)
             op3 = true;
             break;
         }
+
+        if (firstchar == "/" && nextchar == "0" || firstchar == "%" && nextchar == "0" || firstchar == "0" && nextchar == "/" || firstchar == "0" && nextchar == "%")
+        {
+            isdenominatorz = true;
+            break;
+        }
     }
 
     if (op == true)
@@ -435,6 +444,16 @@ void valid_expresion(string infix)
     if (op3 == true)
     {
         cout << "\033[1;31m Error#104 (Few Arguments) \033[0m\n";
+        exit(3);
+    }
+    else
+    {
+        cout << "pass" << endl;
+    }
+
+    if (isdenominatorz == true)
+    {
+        cout << "\033[1;31m Error#105 (Math Error Denominator is 0 ) \033[0m\n";
         exit(3);
     }
     else
