@@ -6,11 +6,7 @@ stack<double> s2;         // numbers stacl
 vector<string> g1;        //posfix
 vector<double> numscheck; //numscheck
 int precedence1 = 0;
-int counter = 0;
-int count_parentesis = 0;
-int precedence2;
 string inf;
-string c_operator;
 // revisar lo de los parentesis () presedencia maxima
 // (6+2)*3/2^2-4            pass
 // (6+10(10+1))*2           pass
@@ -18,6 +14,9 @@ string c_operator;
 // ((8+(1+2)/15))           pass
 //8^2(5*(5*2)+(18/2))/1000  pass
 //(1+1.5)*(2+300)           pass
+//(pi+pi)*pi/pi^pi-pi       pass
+//(e+e)*e/e^e-e             pass
+// (e+pi)*e/pi^2-4            pass
 
 // evaluador machine
 void evaluador(string infix)
@@ -93,7 +92,7 @@ void stack2(string operators)
             {
                 s.pop();
             }
-            if (s.top() == "^" || s.top() == "*" || s.top() == "/" || s.top() == "%" || s.top() == "+" || s.top() == "-" || s.top() == "pi" || s.top() == "e")
+            if (s.top() == "^" || s.top() == "*" || s.top() == "/" || s.top() == "%" || s.top() == "+" || s.top() == "-")
             {
                 g1.push_back(s.top());
             }
@@ -176,7 +175,7 @@ void stack2(string operators)
 // if is operator
 int is_operator(string symbol)
 {
-    if (symbol == "(" || symbol == ")" || symbol == "^" || symbol == "*" || symbol == "/" || symbol == "%" || symbol == "+" || symbol == "-" || symbol == "pi" || symbol == "e")
+    if (symbol == "(" || symbol == ")" || symbol == "^" || symbol == "*" || symbol == "/" || symbol == "%" || symbol == "+" || symbol == "-")
     {
         return 1;
     }
@@ -196,6 +195,13 @@ bool is_number(string n)
         return true;
     }
     else if (*c == '.')
+        return true;
+
+    else if (*c == 'p')
+        return true;
+    else if (*c == 'i')
+        return true;
+    else if (*c == 'e')
         return true;
     else
         return false;
@@ -248,6 +254,11 @@ void stackchecker()
     cout << '\n';
 }
 
+template <typename T>
+T pi = T(3.141592653589793238462643383);
+template <typename T>
+T e = T(2.71828);
+
 void evaluate_expressions()
 {
     //*i is has the result
@@ -262,9 +273,22 @@ void evaluate_expressions()
     {
         if (1 == is_number(*i))
         {
-            cout << "is number" << endl;
-            digits = stod(*i, &sz);
-            s2.push(digits);
+
+            if (*i == "pi")
+            {
+                s2.push(pi<double>);
+            }
+            else if (*i == "e")
+            {
+                s2.push(e<double>);
+            }
+            else
+            {
+
+                cout << "is number" << endl;
+                digits = stod(*i, &sz);
+                s2.push(digits);
+            }
         }
         else if (is_operator(*i))
         {
@@ -311,10 +335,6 @@ double operation(double a, double b, string opr)
         return fmod(a, b);
     case '^':
         return pow(a, b);
-    case 'p':
-        return fmod(a, b);
-    case 'e':
-        return fmod(a, b);
     default:
         return 0;
     }
