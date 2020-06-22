@@ -1,6 +1,7 @@
 #include "evaluador.hpp"
 
 int sizes;
+double result = 0;
 stack<string> s;          // stack2
 stack<double> s2;         // numbers stacl
 vector<string> g1;        //posfix
@@ -12,22 +13,29 @@ string inf;
 // (6+10(10+1))*2           pass
 // 1^2/(5*3)+10             pass
 // ((8+(1+2)/15))           pass
-//8^(5*(5*2)+(18/2))/1000  pass
+//8^(5*(5*2)+(18/2))/1000   pass
 //(1+1.5)*(2+300)           pass
 //(pi+pi)*pi/pi^pi-pi       pass
 //(e+e)*e/e^e-e             pass
 // (e+pi)*e/pi^2-4          pass
 // 5*(6+2)-12/4             pass
+//1^2*20/2+(3+4)*3^2-6+15   pass
 //---------------error Test-------------------------
-// 1+1//(1-1)1             pass
-// 11+11(1-1)1-            pass
-// (1+1/(1-1)1             pass
-// +11+11(1-1)1            pass
-// 11+11(1-1-)1            pass
-// 11+11(-1-1)1            pass
+// 1+1//(1-1)1              pass
+// 11+11(1-1)1-             pass
+// (1+1/(1-1)1              pass
+// +11+11(1-1)1             pass
+// 11+11(1-1-)1             pass
+// 11+11(-1-1)1             pass
 // 11/11(1-1)1              pass
-// 11%0(1-1)1              pass
+// 11%0(1-1)1               pass
 // evaluador machine
+//---------Features-------------
+// c++ 14 Template
+// c++ 14 function auto
+//c++ 11 stod
+// 2 c++ 11 feature en (auto i = g1.begin(); i != g1.end() feature c++ 11
+// C++11 stack
 void evaluador(string infix)
 {
     inf = infix;
@@ -249,7 +257,7 @@ void stackchecker()
     cout << '\n';
 }
 
-//features c++ 14/17
+//features c++ 14
 template <typename T>
 T pi = T(3.141592653589793238462643383);
 template <typename T>
@@ -261,11 +269,10 @@ void evaluate_expressions()
     double x = 0;
     double y = 0;
     double digits = 0;
-    double result = 0;
     string op;
     string::size_type sz;
 
-    for (auto i = g1.begin(); i != g1.end(); ++i)
+    for (auto i = g1.begin(); i != g1.end(); ++i) // 2 feature en 1  (auto i = g1->cbegin(); i != g1.end() feature c++ 11
     {
         if (1 == is_number(*i))
         {
@@ -282,7 +289,7 @@ void evaluate_expressions()
             {
 
                 cout << "is number" << endl;
-                digits = stod(*i, &sz);
+                digits = stod(*i, &sz); // c++ 11 stod
                 s2.push(digits);
             }
         }
@@ -340,11 +347,6 @@ double operation(double a, double b, string opr)
     }
 }
 
-double answer()
-{
-    return 1;
-}
-
 void print_posfix()
 {
     cout << endl
@@ -360,7 +362,8 @@ void print_posfix()
 
 //--------------------validate_expresion--------------------------//
 
-int operators_check(string symbol)
+// c++ 14 auto function
+auto operators_check(string symbol)
 {
     if (symbol == "^" || symbol == "*" || symbol == "/" || symbol == "%" || symbol == "+" || symbol == "-")
     {
@@ -372,6 +375,7 @@ int operators_check(string symbol)
 
 void valid_expresion(string infix)
 {
+
     int c_parenthesis = 0;
     bool op = false;
     bool op2;
@@ -475,4 +479,27 @@ void valid_expresion(string infix)
         cout << "\033[1;31m Error#101 (Parentheses Mismatched) \033[0m\n";
         exit(3);
     }
+}
+
+void Pruebas(double p1, double p2)
+{
+    if (p1 == p2)
+    {
+
+        cout << "MISSION PASSED" << endl;
+        cout << " R E S P E C T  +" << endl;
+    }
+    else
+    {
+        cout << "MISSION FAIILED" << endl;
+    }
+}
+
+void Tests_TDD()
+{
+    cout << "******************TDD********************" << endl;
+    cout << "Prueba : 1  18,10+(1+2)*2+2   " << endl;
+    evaluador("10+(1+2)*2+2");
+    evaluate_expressions();
+    Pruebas(18, result);
 }
