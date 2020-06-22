@@ -6,6 +6,7 @@ stack<double> s2;         // numbers stacl
 vector<string> g1;        //posfix
 vector<double> numscheck; //numscheck
 int precedence1 = 0;      // precedence saver
+bool isdenominatorz = false;
 string inf;
 // (6+2)*3/2^2-4            pass
 // (6+10(10+1))*2           pass
@@ -302,10 +303,14 @@ void evaluate_expressions()
             // y = stod(s.top().substr(sz));
             cout << "variable in y : " << y << endl;
             cout << '\n';
+            if (*i == "/" && y == 0 || *i == "%" && y == 0 || *i == "%" && x == 0 || *i == "/" && x == 0)
+                isdenominatorz = true;
 
             result = operation(y, x, op);
             s2.push(result);
             cout << "result :" << result << endl;
+            if (isdenominatorz == true)
+                cout << "\033[1;31m Error#105 (Math Error Denominator undefined = 0) \033[0m\n";
         }
     }
 }
@@ -414,11 +419,11 @@ void valid_expresion(string infix)
             break;
         }
 
-        if (firstchar == "/" && nextchar == "0" || firstchar == "%" && nextchar == "0" || firstchar == "0" && nextchar == "/" || firstchar == "0" && nextchar == "%")
-        {
-            isdenominatorz = true;
-            break;
-        }
+        // if (firstchar == "/" && nextchar == "0" || firstchar == "%" && nextchar == "0" || firstchar == "0" && nextchar == "/" || firstchar == "0" && nextchar == "%")
+        // {
+        //     isdenominatorz = true;
+        //     break;
+        // }
     }
 
     if (op == true)
@@ -451,15 +456,15 @@ void valid_expresion(string infix)
         cout << "pass" << endl;
     }
 
-    if (isdenominatorz == true)
-    {
-        cout << "\033[1;31m Error#105 (Math Error Denominator is 0 ) \033[0m\n";
-        exit(3);
-    }
-    else
-    {
-        cout << "pass" << endl;
-    }
+    // if (isdenominatorz == true)
+    // {
+    //     cout << "\033[1;31m Error#105 (Math Error Denominator is 0 ) \033[0m\n";
+    //     exit(3);
+    // }
+    // else
+    // {
+    //     cout << "pass" << endl;
+    // }
 
     if (c_parenthesis % 2 == 0)
     {
