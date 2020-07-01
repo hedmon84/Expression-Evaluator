@@ -1,5 +1,4 @@
 #include "evaluador.hpp"
-
 int sizes;
 double result = 0;
 stack<string> s;          // stack2
@@ -33,9 +32,30 @@ string inf;
 //---------Features-------------
 // c++ 14 Template
 // c++ 14 function auto
+// c++14 Return type deduction
+// c++14 [[deprecated]] attribute
 //c++ 11 stod
-// 2 c++ 11 feature en (auto i = g1.begin(); i != g1.end() feature c++ 11
+//c++11 auto variables
+// c++ 11 Automatic Type Deduction en (auto i = g1.begin(); i != g1.end() feature c++ 11
 // C++11 stack
+// c++ 11 nullptr
+// C++17 consexpr
+// c++ 17 [[fallthrough]]
+// c++ 17 inline
+//c++17 lambda expresion
+
+struct errors
+{
+
+    inline static string error102 = "\033[1;31m Error#102 (Character not allowed) \033[0m\n";
+    inline static string error103 = "\033[1;31m Error#103 (Character not allowed) \033[0m\n";
+    inline static string error104 = "\033[1;31m Error#104 (Few Arguments) \033[0m\n";
+    inline static string error101 = "\033[1;31m Error#101 (Parentheses Mismatched) \033[0m\n";
+    inline static string pass = "\033[1;31m Pass \033[0m\n";
+
+} handle;
+
+//[[deprecated("Esta funcion tendra una nueva version 2.0 mas compacta")]]
 void evaluador(string infix)
 {
     inf = infix;
@@ -358,6 +378,8 @@ void print_posfix()
         cout << *i << " ";
 
     cout << endl;
+
+    int *i = nullptr; //c++11 nullptr
 }
 
 //--------------------validate_expresion--------------------------//
@@ -369,8 +391,9 @@ auto operators_check(string symbol)
     {
         return 1;
     }
+
     else
-        return 0;
+        return 0; //Return type deduction
 }
 
 void valid_expresion(string infix)
@@ -436,13 +459,13 @@ void valid_expresion(string infix)
     }
     else
     {
-        cout << "\033[1;31m Error#102 (Character not allowed) \033[0m\n";
+        cout << handle.error102;
         exit(3);
     }
 
     if (op2 == true)
     {
-        cout << "\033[1;31m Error#103 (Character not allowed) \033[0m\n";
+        cout << handle.error103;
         exit(3);
     }
     else
@@ -452,7 +475,7 @@ void valid_expresion(string infix)
 
     if (op3 == true)
     {
-        cout << "\033[1;31m Error#104 (Few Arguments) \033[0m\n";
+        cout << handle.error104;
         exit(3);
     }
     else
@@ -472,11 +495,12 @@ void valid_expresion(string infix)
 
     if (c_parenthesis % 2 == 0)
     {
-        cout << "pass" << endl;
+        [](string a) { cout << a << endl; }(handle.pass); //c++17 lambda expresion
     }
     else
     {
-        cout << "\033[1;31m Error#101 (Parentheses Mismatched) \033[0m\n";
+
+        cout << handle.error101;
         exit(3);
     }
 }
@@ -531,48 +555,53 @@ void Tests_TDD()
     cout << "Que opcion desea evaular ? " << endl;
     cin >> eval;
 
+    if constexpr (0 || nullptr) //c++17 rite code that is instantiated depending on a compile-time condition.
+    {
+        cout << "test son de 1 en adelante;" << endl;
+    }
+
     switch (eval)
     {
-    case 0:
-        Pruebas("10+(1+2)*2+2", 10); // el resultado tiene que ser 18
-        cout << "Prueba : 0   operation: 10+(1+2)*2+2, input: 10" << endl;
-
-        break;
-
     case 1:
-        Pruebas("(6+2)*3/2^2-4", 10); // el resultado tiene que ser 2
+        Pruebas("10+(1+2)*2+2", 18); // el resultado tiene que ser 18
         cout << "Prueba : 1   operation: 10+(1+2)*2+2, input: 10" << endl;
+
         break;
+
     case 2:
-        Pruebas("(6+10(10+1))*2", 42); // el resultado tiene que ser 42
+        Pruebas("(6+2)*3/2^2-4", 10); // el resultado tiene que ser 2
         cout << "Prueba : 2   operation: 10+(1+2)*2+2, input: 10" << endl;
         break;
     case 3:
-        Pruebas("((8+(1+2)/15))", 8); // el resultado tiene que ser 8.2
+        Pruebas("(6+10(10+1))*2", 42); // el resultado tiene que ser 42
         cout << "Prueba : 3   operation: 10+(1+2)*2+2, input: 10" << endl;
         break;
     case 4:
-        Pruebas("2*(1+(4*(2+1)+3))", 32); // el resultado tiene que ser 32
+        Pruebas("((8+(1+2)/15))", 8); // el resultado tiene que ser 8.2
         cout << "Prueba : 4   operation: 10+(1+2)*2+2, input: 10" << endl;
         break;
     case 5:
-        Pruebas("2*20/2+(3+4)*3^2-6+15", 10); // el resultado tiene que ser 92
+        Pruebas("2*(1+(4*(2+1)+3))", 32); // el resultado tiene que ser 32
         cout << "Prueba : 5   operation: 10+(1+2)*2+2, input: 10" << endl;
         break;
     case 6:
-        Pruebas("5*(6+2)-12/4", 10); // el resultado tiene que ser 37
+        Pruebas("2*20/2+(3+4)*3^2-6+15", 10); // el resultado tiene que ser 92
         cout << "Prueba : 6   operation: 10+(1+2)*2+2, input: 10" << endl;
         break;
     case 7:
-        Pruebas("1^2*20/2+(3+4)*3^2-6+15", 10); // el resultado tiene que ser 82
+        Pruebas("5*(6+2)-12/4", 10); // el resultado tiene que ser 37
         cout << "Prueba : 7   operation: 10+(1+2)*2+2, input: 10" << endl;
         break;
     case 8:
-        Pruebas("(e+pi)*e/pi^2-4", 10); // el resultado tiene que ser -2.38608
+        Pruebas("1^2*20/2+(3+4)*3^2-6+15", 10); // el resultado tiene que ser 82
         cout << "Prueba : 8   operation: 10+(1+2)*2+2, input: 10" << endl;
+        break;
+    case 9:
+        Pruebas("(e+pi)*e/pi^2-4", 10); // el resultado tiene que ser -2.38608
+        cout << "Prueba : 9   operation: 10+(1+2)*2+2, input: 10" << endl;
         break;
 
     default:
-        break;
+        break; // [[fallthrough]]c++17 indicates to the compiler that falling through in a switch statement is intended behavior.
     }
 }

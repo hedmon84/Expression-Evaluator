@@ -8,10 +8,12 @@
 #include <cmath>
 #include <fstream>
 #include <stdio.h>
+#include <string>
 #include <ctype.h>
 #include <iomanip>
 using namespace std;
 
+// namespace variables
 void evaluador(string);
 void stack1(string digits);
 void stack2(string operators);
