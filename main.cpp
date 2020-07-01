@@ -2,6 +2,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 //compile
 // g++ *.hpp *.cpp
 using namespace std;

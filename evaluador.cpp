@@ -481,25 +481,98 @@ void valid_expresion(string infix)
     }
 }
 
-void Pruebas(double p1, double p2)
+void Pruebas(string op, double p1)
 {
-    if (p1 == p2)
+
+    evaluador(op);
+    evaluate_expressions();
+
+    if (p1 == result)
     {
 
-        cout << "MISSION PASSED" << endl;
-        cout << " R E S P E C T  +" << endl;
+        cout << endl
+             << endl
+             << endl
+             << endl
+             << endl
+             << endl
+             << endl
+             << endl
+             << endl
+             << endl;
+
+        cout << "TDD: "
+             << "\033[1;32m  Passed \033[0m\n";
     }
     else
     {
-        cout << "MISSION FAIILED" << endl;
+        cout << endl
+             << endl
+             << endl
+             << endl
+             << endl
+             << endl
+             << endl
+             << endl
+             << endl
+             << endl;
+
+        cout << "TDD: "
+             << "\033[1;31m  Failed \033[0m\n";
     }
 }
 
 void Tests_TDD()
 {
     cout << "******************TDD********************" << endl;
-    cout << "Prueba : 1  18,10+(1+2)*2+2   " << endl;
-    evaluador("10+(1+2)*2+2");
-    evaluate_expressions();
-    Pruebas(18, result);
+
+    int eval = 0;
+
+    cout << "Que opcion desea evaular ? " << endl;
+    cin >> eval;
+
+    switch (eval)
+    {
+    case 0:
+        Pruebas("10+(1+2)*2+2", 10); // el resultado tiene que ser 18
+        cout << "Prueba : 0   operation: 10+(1+2)*2+2, input: 10" << endl;
+
+        break;
+
+    case 1:
+        Pruebas("(6+2)*3/2^2-4", 10); // el resultado tiene que ser 2
+        cout << "Prueba : 1   operation: 10+(1+2)*2+2, input: 10" << endl;
+        break;
+    case 2:
+        Pruebas("(6+10(10+1))*2", 42); // el resultado tiene que ser 42
+        cout << "Prueba : 2   operation: 10+(1+2)*2+2, input: 10" << endl;
+        break;
+    case 3:
+        Pruebas("((8+(1+2)/15))", 8); // el resultado tiene que ser 8.2
+        cout << "Prueba : 3   operation: 10+(1+2)*2+2, input: 10" << endl;
+        break;
+    case 4:
+        Pruebas("2*(1+(4*(2+1)+3))", 32); // el resultado tiene que ser 32
+        cout << "Prueba : 4   operation: 10+(1+2)*2+2, input: 10" << endl;
+        break;
+    case 5:
+        Pruebas("2*20/2+(3+4)*3^2-6+15", 10); // el resultado tiene que ser 92
+        cout << "Prueba : 5   operation: 10+(1+2)*2+2, input: 10" << endl;
+        break;
+    case 6:
+        Pruebas("5*(6+2)-12/4", 10); // el resultado tiene que ser 37
+        cout << "Prueba : 6   operation: 10+(1+2)*2+2, input: 10" << endl;
+        break;
+    case 7:
+        Pruebas("1^2*20/2+(3+4)*3^2-6+15", 10); // el resultado tiene que ser 82
+        cout << "Prueba : 7   operation: 10+(1+2)*2+2, input: 10" << endl;
+        break;
+    case 8:
+        Pruebas("(e+pi)*e/pi^2-4", 10); // el resultado tiene que ser -2.38608
+        cout << "Prueba : 8   operation: 10+(1+2)*2+2, input: 10" << endl;
+        break;
+
+    default:
+        break;
+    }
 }

@@ -25,7 +25,7 @@ int is_operator(string symbol);
 auto operators_check(string symbol);
 bool is_number(string number);
 int precedence(string symbol);
-void Pruebas(double p1, double p2);
+void Pruebas(string operation, double p1);
 void Tests_TDD();
 
 #endif /*EVALUADOR_HPP*/
